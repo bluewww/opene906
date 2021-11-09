@@ -99,8 +99,8 @@ hello_world_build:
 	@cp ./tests/cases/hello_world/* ./work
 	@find ./tests/lib/ -maxdepth 1 -type f -exec cp {} ./work/ \; 
 	@cp ./tests/lib/clib/* ./work
-	@cp ./tests/lib/newlib_wrap/* ./work
-	@cd ./work && make -s clean && make -s all CPU_ARCH_FLAG_0=e906f CPU_ARCH_FLAG_1=nodsp  ENDIAN_MODE=little-endian CASENAME=hello_world FILE=hello_world_main >& hello_world_build.case.log 
+	cp ./tests/lib/newlib_wrap/* ./work
+	cd ./work && make clean && make all CPU_ARCH_FLAG_0=e906f CPU_ARCH_FLAG_1=nodsp  ENDIAN_MODE=little-endian CASENAME=hello_world FILE=hello_world_main >& hello_world_build.case.log
 
 
 
