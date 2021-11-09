@@ -30,7 +30,7 @@ limitations under the License.
   `define RTL_DAHBL_MEM tb.x_soc.x_cpu_sub_system_ahb.x_dahb_mem_ctrl
 `else
   `define RTL_DAHBL_MEM tb.x_soc.x_dmem_ctrl
-`endif 
+`endif
 
 //clock period
 `define CLK_PERIOD          10
@@ -65,8 +65,8 @@ begin
   end
 end
 
-initial 
-begin 
+initial
+begin
   jclk = 0;
   forever begin
     #(`TCLK_PERIOD/2) jclk = ~jclk;
@@ -83,7 +83,7 @@ begin
   rst_b = 1;
 end
 
-initial 
+initial
 begin
   jrst_b = 1;
   #100;
@@ -92,7 +92,7 @@ begin
   jrst_b = 1;
 end
 
-initial 
+initial
 begin
   nrst_b = 1;
   #100;
@@ -102,7 +102,7 @@ begin
 end
 
 ///////////////////////////////////////
-// Memory Initialization  
+// Memory Initialization
 ///////////////////////////////////////
 integer i;
 reg [31:0] mem_data_size;
@@ -116,7 +116,7 @@ begin
   $display("\t******START TO LOAD PROGRAM******\n");
   $readmemh("./case.pat", mem_inst_temp);
   $readmemh("./data.pat", mem_data_temp);
-  
+
 
   for(i=0;i<65536;i=i+1)
   begin
@@ -144,7 +144,7 @@ begin
 
 end
 ///////////////////////////////////////
-// Finish Condition Control 
+// Finish Condition Control
 ///////////////////////////////////////
 
 // Reaching the max simulation time.
@@ -156,7 +156,7 @@ begin
   $display("*   meeting max simulation time, stop!       *");
   $display("**********************************************");
   FILE = $fopen("run_case.report","w");
-  $fdisplay(FILE,"TEST FAIL");   
+  $fdisplay(FILE,"TEST FAIL");
 $finish;
 end
 // No instrunction retired in the last `LAST_CYCLE cycles
@@ -167,7 +167,7 @@ always @(posedge clk or negedge rst_b)
 begin
   if(!rst_b)
     cycle_count[31:0] <= 32'b1;
-  else 
+  else
     cycle_count[31:0] <= cycle_count[31:0] + 1'b1;
 end
 
@@ -185,7 +185,7 @@ begin
       $display("*************************************************************");
       #10;
       FILE = $fopen("run_case.report","w");
-      $fdisplay(FILE,"TEST FAIL");   
+      $fdisplay(FILE,"TEST FAIL");
 
       $finish;
     end
@@ -196,7 +196,7 @@ begin
 end
 
 
-//Finish control with address 32'h0 
+//Finish control with address 32'h0
 reg [31:0] cpu_addr;
 reg [1:0]  cpu_trans;
 reg        cpu_write;
@@ -220,8 +220,8 @@ begin
    $display("**********************************************");
   #10;
    FILE = $fopen("run_case.report","w");
-   $fdisplay(FILE,"TEST PASS");   
-	
+   $fdisplay(FILE,"TEST PASS");
+
    $finish;
   end
   else if((cpu_trans[1:0] == 2'b10) &&
@@ -234,7 +234,7 @@ begin
    $display("**********************************************");
   #10;
    FILE = $fopen("run_case.report","w");
-   $fdisplay(FILE,"TEST FAIL");   
+   $fdisplay(FILE,"TEST FAIL");
 
    $finish;
   end
@@ -253,11 +253,11 @@ initial
 begin
   `ifdef NC_SIM
     $dumpfile("test.vcd");
-    $dumpvars;  
+    $dumpvars;
   `else
     `ifdef IVERILOG_SIM
        $dumpfile("test.vcd");
-       $dumpvars;  
+       $dumpvars;
     `else
       $fsdbDumpvars();
     `endif
@@ -274,7 +274,7 @@ assign jtg_tdi = 1'b0;
 
 assign uart0_sin = 1'b1;
 
-//instantiate soc    
+//instantiate soc
 soc x_soc(
   .i_pad_clk            ( clk                  ),
   .i_pad_uart0_sin      ( uart0_sin            ),
@@ -290,13 +290,13 @@ soc x_soc(
   .i_pad_jtg_tms        ( jtg_tms              ),
 `ifdef RST_ACTIVE_HIGH
   .i_pad_rst            ( !rst_b               )
-`else     
+`else
   .i_pad_rst_b          ( rst_b                )
-`endif     
+`endif
 );
 
 
-`ifdef PG_SIM 
+`ifdef PG_SIM
 
 `define MAX_ARCH_STRLEN 100
 
@@ -337,13 +337,13 @@ begin
 //
 //     release tb.x_soc.x_cpu_sub_system_ahb.x_ck803s.pmu_corec_sleep_in ;
 //     #20
-//     release tb.x_soc.x_cpu_sub_system_ahb.x_ck803s.pmu_corec_isolation; 
+//     release tb.x_soc.x_cpu_sub_system_ahb.x_ck803s.pmu_corec_isolation;
 //     #20
 //     release tb.x_soc.pad_cpu_rst_b ;
 
 end
 
-initial 
+initial
 begin
   $deposit(tb.x_soc.x_cpu_sub_system_ahb.pmu_corec_sleep_in, 1'b0);
   $deposit(tb.x_soc.x_cpu_sub_system_ahb.pmu_corec_isolation, 1'b0);
@@ -363,7 +363,7 @@ end
 `define CPU_CLK      `CPU_TOP.pll_core_cpuclk
 `define CPU_RST      `CPU_TOP.pad_cpu_rst_b
 
-`ifdef E902 
+`ifdef E902
 	`define VIRTUAL_READ `CPU_TOP.x_cr_tcipif_top.x_cr_tcipif_dbus.dummy_addr_cmplt
 `elsif E906
 	`define VIRTUAL_READ `CPU_TOP.x_pa_tcipif_top.x_pa_tcipif_dbus.dummy_addr_cmplt
@@ -388,17 +388,17 @@ begin
     virtual_counter[31:0] <= virtual_counter[31:0];
   else
     virtual_counter[31:0] <= virtual_counter[31:0] +1'b1;
-end 
+end
 
-initial 
-begin 
+initial
+begin
   #1;
   wait (`VIRTUAL_READ==1'b1);
   force `VIRTUAL_TIME = virtual_counter[31:0];
   @(posedge `CPU_CLK);
   release `VIRTUAL_TIME;
   #1;
-  
+
   wait (`VIRTUAL_READ==1'b1);
   force `VIRTUAL_TIME = virtual_counter[31:0];
   @(posedge `CPU_CLK);
@@ -435,12 +435,11 @@ always @(posedge `CPU_CLK or negedge `CPU_RST)
 begin
   if(!`CPU_RST)
     ins_counter[31:0] <= 32'b0;
-  else if(`SOC_TOP.x_cpu_sub_system_ahb.biu_pad_retire && 
+  else if(`SOC_TOP.x_cpu_sub_system_ahb.biu_pad_retire &&
          (`SOC_TOP.x_cpu_sub_system_ahb.biu_pad_retire_pc[31:0] > 32'had4))
     ins_counter[31:0] <= ins_counter[31:0] + 1'b1;
-  else 
+  else
     ins_counter[31:0] <= ins_counter[31:0];
 end
 
 endmodule
-

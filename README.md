@@ -3,18 +3,18 @@
   Welcome to E906! Some key directories are shown below.
 ```
 |--E906_RTL_FACRORY/
-  |--gen_rtl/     ##the source verilog code of E906 
+  |--gen_rtl/     ##the source verilog code of E906
   |--setup/       ##set the environment variables
 |--smart_run/     ##the RTL simulation environment
   |--impl/        ##sdc file
-  |--logical/     ##the SoC demo and test bench to run the simulation 
+  |--logical/     ##the SoC demo and test bench to run the simulation
   |--setup/       ##GNU tool chain setting
   |--tests/       ##include the test suit, linker file, boot code and so on
   |--work/        ##the working directory
   |--Makefile     ##the simulation script
 |--doc/           ##the user and integration manual of E906
 ```
-  
+
 
 ## Usage (ETH)
 
@@ -29,7 +29,7 @@ $ make help
 # this runs hell world
 $ vcs-2020.03 make runcase CASE=hello_world SIM=vcs
 ```
-    
+
 
 (Optional) You can get the source code for the toolchain here:
 
@@ -39,9 +39,9 @@ https://github.com/T-head-Semi/xuantie-gnu-toolchain
 
 
 ## Notes
-    
+
 ```
-The testbench supports iverilog, vcs and irun to run simulation and you can use Gtkwave or verdi 
+The testbench supports iverilog, vcs and irun to run simulation and you can use Gtkwave or verdi
 to open the waveform under ./smart_run/work/ directory.
 
 You can get the debugger, IDE and SDK from the url:https://occ.t-head.cn/community/download?id=575997419775328256
@@ -67,4 +67,3 @@ You can get the debugger, IDE and SDK from the url:https://occ.t-head.cn/communi
 #See the License for the specific language governing permissions and
 #limitations under the License.
 #*/
-
