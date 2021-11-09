@@ -38,6 +38,9 @@ limitations under the License.
 `define MAX_RUN_TIME        700000000
 `define clk           tb.clk
 `define rst_b         tb.rst_b
+// Dump starting from this hierarchy level. If the VCD is too big,
+// reduce the numbers of dumped elements
+`define DUMP_TOP_HIERARCHY tb.x_soc
 // `include "../cpu/environment.h"
 `timescale 1ns/100ps
 
@@ -251,17 +254,9 @@ end
 `ifndef NO_DUMP
 initial
 begin
-  `ifdef NC_SIM
-    $dumpfile("test.vcd");
-    $dumpvars;
-  `else
-    `ifdef IVERILOG_SIM
-       $dumpfile("test.vcd");
-       $dumpvars;
-    `else
-      $fsdbDumpvars();
-    `endif
-  `endif
+  $display("######time:%d, Dump start######",$time);
+  $dumpfile("test.vcd");
+  $dumpvars(0, `DUMP_TOP_HIERARCHY);
 end
 `endif
 
